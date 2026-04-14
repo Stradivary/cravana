@@ -27,7 +27,7 @@ export async function OPTIONS(req: NextRequest) {
 // Body: { quantity: number }
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { itemId: string } }
+  context: { params: Promise<{ itemId: string }> }
 ) {
   const corsHeaders = getCorsHeaders(req.headers.get('origin'));
   const userId = await getUserId(req);
@@ -35,7 +35,7 @@ export async function PUT(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
   }
 
-  const { itemId } = params;
+  const { itemId } = await context.params;
 
   let body: { quantity?: number };
   try {
@@ -99,7 +99,7 @@ export async function PUT(
 // Menghapus satu item dari cart berdasarkan itemId.
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { itemId: string } }
+  context: { params: Promise<{ itemId: string }> }
 ) {
   const corsHeaders = getCorsHeaders(req.headers.get('origin'));
   const userId = await getUserId(req);
@@ -107,7 +107,7 @@ export async function DELETE(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
   }
 
-  const { itemId } = params;
+  const { itemId } = await context.params;
 
   // Pastikan item milik user ini sebelum hapus
   const { data: item } = await supabaseServer
