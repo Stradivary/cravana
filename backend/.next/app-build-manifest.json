@@ -42,6 +42,13 @@
       "static/chunks/main-app-9fc1d19b0ee5e2b5.js",
       "static/chunks/app/api/auth/register/route-87535b04fe4f3d02.js"
     ],
+    "/api/cart/[itemId]/route": [
+      "static/chunks/webpack-96c00b23927cdfa6.js",
+      "static/chunks/4bd1b696-67ee12fb04071d3b.js",
+      "static/chunks/32-9b23da64a213cf35.js",
+      "static/chunks/main-app-9fc1d19b0ee5e2b5.js",
+      "static/chunks/app/api/cart/[itemId]/route-7a1da8c771c4439f.js"
+    ],
     "/api/cart/route": [
       "static/chunks/webpack-96c00b23927cdfa6.js",
       "static/chunks/4bd1b696-67ee12fb04071d3b.js",
@@ -90,13 +97,6 @@
       "static/chunks/32-9b23da64a213cf35.js",
       "static/chunks/main-app-9fc1d19b0ee5e2b5.js",
       "static/chunks/app/api/users/[id]/route-5155f7a3f559c9e3.js"
-    ],
-    "/api/cart/[itemId]/route": [
-      "static/chunks/webpack-96c00b23927cdfa6.js",
-      "static/chunks/4bd1b696-67ee12fb04071d3b.js",
-      "static/chunks/32-9b23da64a213cf35.js",
-      "static/chunks/main-app-9fc1d19b0ee5e2b5.js",
-      "static/chunks/app/api/cart/[itemId]/route-7a1da8c771c4439f.js"
     ],
     "/api/users/route": [
       "static/chunks/webpack-96c00b23927cdfa6.js",
