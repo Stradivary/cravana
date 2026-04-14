@@ -1,11 +1,15 @@
-const DEFAULT_ALLOWED_ORIGINS = ['http://localhost:3000', 'http://localhost:3100'];
+const DEFAULT_ALLOWED_ORIGINS = [
+  'http://localhost:3000',
+  'http://localhost:3100',
+  'https://cravana.vercel.app',
+];
 
 const configuredOrigins = (process.env.ALLOWED_ORIGINS || process.env.ALLOWED_ORIGIN || '')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
 
-const allowedOrigins = configuredOrigins.length > 0 ? configuredOrigins : DEFAULT_ALLOWED_ORIGINS;
+const allowedOrigins = [...new Set([...DEFAULT_ALLOWED_ORIGINS, ...configuredOrigins])];
 const isProduction = process.env.NODE_ENV === 'production';
 
 function escapeRegex(value: string): string {
