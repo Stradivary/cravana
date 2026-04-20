@@ -85,9 +85,9 @@ const SurveyPage: React.FC = () => {
               Ceritakan kesan kamu setelah menikmati Cravana
             </h1>
             <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg">
-              Isi nama dan review singkat. Form ini dibuat sesingkat mungkin agar pelanggan nyaman mengisi dari
-              mobile maupun desktop. Proses cepat tanpa login, visual hangat sesuai tema cookies premium, dan cocok
-              dipakai untuk campaign share QR di toko atau media sosial.
+              Kami mengundang Anda untuk mengisi survei ini berdasarkan pengalaman pribadi Anda bersama Cravana.
+              Mohon isi dengan jujur dan sesuai pengalaman Anda, karena setiap review sangat berarti untuk membantu
+              kami menjaga kualitas produk dan meningkatkan layanan.
             </p>
           </div>
 
