@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from 'components/atoms/Button';
 import { Card } from 'components/atoms/Card';
+import { Dialog, DialogContent, DialogTitle } from 'components/atoms/Dialog';
 import { useGoogleLogin } from 'hooks/useAuth';
 import { isAuthenticatedSession, setAuthenticatedSession } from 'lib/auth-session';
 import { ProductCard, type ProductCardItem } from 'components/molecules/ProductCard';
@@ -18,6 +19,7 @@ const LandingPage: React.FC = () => {
   const { data: productsResult = [], isLoading: isLoadingProducts, error: productsError } = useProducts();
   const [isPending, setIsPending] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isQrModalOpen, setIsQrModalOpen] = useState(false);
   const popupRef = useRef<Window | null>(null);
 
   const featuredProducts: ProductCardItem[] = productsResult.map((product) => ({
@@ -84,7 +86,6 @@ const LandingPage: React.FC = () => {
     }
   };
 
-  // Jika sudah login, tampilkan tombol ke dashboard
   const isLoggedIn = isAuthenticatedSession();
 
   const handleViewAllClick = (event?: React.MouseEvent<HTMLAnchorElement>) => {
@@ -105,6 +106,24 @@ const LandingPage: React.FC = () => {
     event?.preventDefault();
     void handleGoogleLogin();
   };
+
+  const surveyUrl = useMemo(() => {
+    if (typeof window === 'undefined') {
+      return 'https://cravana.vercel.app/survey';
+    }
+
+    return `${window.location.origin}/survey`;
+  }, []);
+
+  const qrCodeUrl = useMemo(
+    () => `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(surveyUrl)}`,
+    [surveyUrl]
+  );
+
+  const qrCodeLargeUrl = useMemo(
+    () => `https://api.qrserver.com/v1/create-qr-code/?size=520x520&data=${encodeURIComponent(surveyUrl)}`,
+    [surveyUrl]
+  );
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -189,6 +208,74 @@ const LandingPage: React.FC = () => {
             ))}
           </div>
         )}
+
+        <Card className="mt-8 overflow-hidden border-amber-100 bg-white p-0">
+          <div className="grid items-stretch gap-0 md:grid-cols-[1fr_auto]">
+            <div className="flex items-center gap-4 p-4 sm:p-5">
+              <img
+                src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=900&q=80"
+                alt="Cookies Cravana"
+                className="h-24 w-28 flex-shrink-0 rounded-lg object-cover sm:h-28 sm:w-36"
+              />
+
+              <div className="min-w-0">
+                <p className="inline-block rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-semibold text-amber-800">
+                  Survey Review Cravana
+                </p>
+                <h3 className="mt-2 text-base font-bold text-gray-900 sm:text-lg">
+                  Yuk bantu review produk Cravana
+                </h3>
+                <p className="mt-1 text-xs leading-5 text-gray-600 sm:text-sm">
+                  Scan barcode atau klik tombol untuk isi survey singkat pengalaman produk favoritmu.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Button asChild className="px-3 py-2 text-xs sm:text-sm">
+                    <Link to="/survey">Isi survey</Link>
+                  </Button>
+                  <a
+                    className="inline-flex items-center rounded-md border border-gray-300 px-3 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 sm:text-sm"
+                    href={surveyUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Buka link
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-amber-100 bg-amber-50 p-4 text-center md:border-l md:border-t-0">
+              <p className="text-xs font-semibold text-amber-900">Barcode Survey</p>
+              <button
+                type="button"
+                className="mt-2 rounded-md border border-amber-200 bg-white p-1.5 transition hover:bg-amber-100/40"
+                onClick={() => setIsQrModalOpen(true)}
+                aria-label="Perbesar barcode survey"
+              >
+                <img
+                  src={qrCodeUrl}
+                  alt="Barcode link survey Cravana"
+                  className="mx-auto w-24 rounded-md sm:w-28"
+                />
+              </button>
+              <p className="mt-2 text-[11px] text-amber-900/80">Klik barcode untuk perbesar</p>
+            </div>
+          </div>
+        </Card>
+
+        <Dialog open={isQrModalOpen} onOpenChange={setIsQrModalOpen}>
+          <DialogContent className="w-[calc(100%-2rem)] max-w-md p-5 sm:p-6">
+            <DialogTitle className="text-base font-semibold text-gray-900">Barcode Survey Cravana</DialogTitle>
+            <p className="mt-1 text-xs text-gray-500">Scan barcode ini untuk membuka halaman survey.</p>
+            <div className="mt-4 rounded-xl border border-amber-100 bg-amber-50 p-3">
+              <img
+                src={qrCodeLargeUrl}
+                alt="Barcode survey ukuran besar"
+                className="mx-auto w-full max-w-[320px] rounded-lg border border-amber-200 bg-white p-2"
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
       </section>
     </main>
   );

@@ -5,6 +5,7 @@ import { AuthCallbackPage, LoginPage, RegisterPage } from 'pages/auth';
 import { DashboardPage } from 'pages/dashboard';
 import { HomePage } from 'pages/home';
 import { LandingPage } from 'pages/landing';
+import { SurveyPage } from 'pages/survey';
 import { CheckoutPage } from 'pages/checkout';
 import { isAuthenticatedSession } from 'lib/auth-session';
 
@@ -18,6 +19,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/survey" element={<SurveyPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
