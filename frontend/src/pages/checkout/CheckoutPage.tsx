@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ArrowLeft, CheckCircle, Clock, QrCode, ShoppingBag, XCircle } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import { Button } from 'components/atoms/Button';
 import { Input } from 'components/atoms/Input';
 import { useCart } from 'hooks/useCart';
@@ -135,10 +136,6 @@ const CheckoutPage: React.FC = () => {
   // SCREEN: Pembayaran (setelah order dibuat)
   // ──────────────────────────────────────────────────────────────────
   if (order) {
-    const qrImageUrl = order.qrString
-      ? `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(order.qrString)}`
-      : null;
-
     return (
       <main className="min-h-screen bg-gray-50">
         {/* Header */}
@@ -196,14 +193,17 @@ const CheckoutPage: React.FC = () => {
                 Bayar via QRIS
               </div>
 
-              {qrImageUrl ? (
-                <img
-                  src={qrImageUrl}
-                  alt="QR Code QRIS"
-                  className="mx-auto rounded-lg border p-1"
-                  width={240}
-                  height={240}
-                />
+              {order.qrString ? (
+                <div className="mx-auto w-fit rounded-lg border p-1">
+                  <QRCodeSVG
+                    value={order.qrString}
+                    size={240}
+                    level="M"
+                    includeMargin
+                    bgColor="#FFFFFF"
+                    fgColor="#111827"
+                  />
+                </div>
               ) : (
                 <div className="mx-auto flex h-[240px] w-[240px] items-center justify-center rounded-lg border bg-gray-50 text-sm text-gray-400">
                   QR tidak tersedia

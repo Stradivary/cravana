@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { QRCodeSVG } from 'qrcode.react';
 import { Button } from 'components/atoms/Button';
 import { Card } from 'components/atoms/Card';
 import { Dialog, DialogContent, DialogTitle } from 'components/atoms/Dialog';
@@ -114,16 +115,6 @@ const LandingPage: React.FC = () => {
 
     return `${window.location.origin}/survey`;
   }, []);
-
-  const qrCodeUrl = useMemo(
-    () => `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(surveyUrl)}`,
-    [surveyUrl]
-  );
-
-  const qrCodeLargeUrl = useMemo(
-    () => `https://api.qrserver.com/v1/create-qr-code/?size=520x520&data=${encodeURIComponent(surveyUrl)}`,
-    [surveyUrl]
-  );
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -252,9 +243,13 @@ const LandingPage: React.FC = () => {
                 onClick={() => setIsQrModalOpen(true)}
                 aria-label="Perbesar barcode survey"
               >
-                <img
-                  src={qrCodeUrl}
-                  alt="Barcode link survey Cravana"
+                <QRCodeSVG
+                  value={surveyUrl}
+                  size={112}
+                  level="M"
+                  includeMargin
+                  bgColor="#FFFFFF"
+                  fgColor="#111827"
                   className="mx-auto w-24 rounded-md sm:w-28"
                 />
               </button>
@@ -268,11 +263,17 @@ const LandingPage: React.FC = () => {
             <DialogTitle className="text-base font-semibold text-gray-900">Barcode Survey Cravana</DialogTitle>
             <p className="mt-1 text-xs text-gray-500">Scan barcode ini untuk membuka halaman survey.</p>
             <div className="mt-4 rounded-xl border border-amber-100 bg-amber-50 p-3">
-              <img
-                src={qrCodeLargeUrl}
-                alt="Barcode survey ukuran besar"
-                className="mx-auto w-full max-w-[320px] rounded-lg border border-amber-200 bg-white p-2"
-              />
+              <div className="mx-auto w-full max-w-[320px] rounded-lg border border-amber-200 bg-white p-2">
+                <QRCodeSVG
+                  value={surveyUrl}
+                  size={300}
+                  level="M"
+                  includeMargin
+                  bgColor="#FFFFFF"
+                  fgColor="#111827"
+                  className="mx-auto h-auto w-full"
+                />
+              </div>
             </div>
           </DialogContent>
         </Dialog>
